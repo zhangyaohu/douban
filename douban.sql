@@ -68,15 +68,35 @@ CREATE TABLE IF NOT EXISTS `hoting_movie` (
   `id` varchar(10) NOT NULL, 
   `score` varchar(10) DEFAULT NULL, 
   `star` varchar(10) DEFAULT NULL, 
-  `release` varchar(32) DEFAULT NULL, 
+  `showtime` varchar(32) DEFAULT NULL, 
   `duration` varchar(32) DEFAULT NULL, 
   `region` varchar(32) NOT NULL, 
   `director` varchar(32) DEFAULT NULL, 
-  `actors` varchar(32) DEFAULT NULL, 
+  `actors` varchar(255) DEFAULT NULL, 
   `category` varchar(32) DEFAULT NULL, 
   `votecount` varchar(32) DEFAULT NULL, 
   `subject` varchar(32) DEFAULT NULL, 
-  `cover` varchar(32) DEFAULT null,
+  `cover` varchar(255) DEFAULT null,
+  `title` varchar(32) DEFAULT null,
   PRIMARY KEY (`id`),
+  KEY `id` (`id`)
+)ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF  NOT EXISTS `review`(
+  `id` varchar(32) NOT  NULL,
+  `avator` varchar(255) DEFAULT NULL,
+  `name` varchar(32) DEFAULT NULL,
+  `rate` float DEFAULT NULL,
+  `meta` datetime DEFAULT NULL,
+  `review_title`  blob DEFAULT NULL,
+  `content`  blob DEFAULT NULL,
+  `review-content` blob DEFAULT NULL,
+  `useful_count`  int(10) DEFAULT null,
+  `useless_count` int(10) DEFAULT NULL,
+  `reported` varchar(32) DEFAULT NULL,
+  `up` int(10) DEFAULT NULL,
+  `down` int(10) DEFAULT NULL,
+  `replay` int(10) DEFAULT NULL,
+   PRIMARY KEY (`id`),
   KEY `id` (`id`)
 )ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;

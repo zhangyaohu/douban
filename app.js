@@ -3,12 +3,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const crontab = require('crontab-node');
+const eventEmitter = require('crontab-node/eventEmitter');
 
+eventEmitter.on('crontab-node exit', () => {
+	process.exit(0);
+});
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var movieTvMain = require('./scheduler/tv');
-var movieMain = require('./scheduler/movie');
-var hotingMain = require('./scheduler/hoting');
 var app = express();
 
 // view engine setup
@@ -24,7 +26,10 @@ var cp = require("child_process");
 var cmdLine = "mysql -uroot -ppassword douban < douban.sql";
 cp.exec(cmdLine, function(error,stdout,stderr) {
     console.log(error,stdout,stderr);
-});  
+}); 
+crontab('20 9 * * *', undefined, require('./scheduler/tv'));
+crontab('25 9 * * *', undefined, require('./scheduler/movie'));
+crontab('30 9 * * *', undefined, require('./scheduler/hoting'));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 

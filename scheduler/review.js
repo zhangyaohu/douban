@@ -7,11 +7,11 @@ var request = require('request');//发送request请求
 var { queryArgs, query } = require('../mysql/index');
 var utils = require('../utils/utils');
 const superagent = require("superagent");
-var url = "https://movie.douban.com/cinema/nowplaying/hangzhou/";
+var url = "https://movie.douban.com/review/best/";
 
 class Main {
 	constructor() {
-		this.init();
+		this.interVal(this.init,0)
 		this.intervalId = null;
 	}
 	async init() {
@@ -74,48 +74,6 @@ class Main {
 				});
 			}
 			clientHttp();
-	}
-	//存储标题函数
-	savedContent($, news_title) {
-		$('#link-report span').each(function (index, item) {
-			var x = $(this).text();
-			x = x + '\n';
-			//将新闻文本内容一段一段添加到/data文件夹下，并用新闻的标题来命名文件
-			fs.access('./data/' + news_title + '.txt', function (err) {
-				if (err) {
-					fs.writeFile('./data/' + news_title + '.txt', function (err) {
-						if (err) {
-							console.log('创建失败!');
-						}
-					})
-				}
-			})
-			fs.appendFile('./data/' + news_title + '.txt', x, 'utf-8', function (err) {
-				if (err) {
-					console.log(err);
-				}
-			});
-		})
-	}
-	//该函数的作用：在本地存储所爬取到的图片资源
-	savedImg($, news_title) {
-		$('#mainpic img').each(function (index, item) {
-			var img_title = $('#content h1 span').text().trim(); //获取图片的标题
-			if (img_title.length > 35 || img_title == "") { //图片标题太长
-				img_title = "Null";
-			}
-			var img_filename = img_title + '.jpg';
-			var img_src = $(this).attr('src'); //获取图片的url
-
-			//采用request模块，向服务器发起一次请求，获取图片资源
-			request.head(img_src, function (err, res, body) {
-				if (err) {
-					console.log(err);
-				}
-			});
-			request(img_src).pipe(fs.createWriteStream('./image/' + img_filename));
-			//通过流的方式，把图片写到本地/image目录下，并用标题和图片的标题作为图片的名称。
-		})
 	}
 	/**
 	 * 每隔十秒采集一次
